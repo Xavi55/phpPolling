@@ -33,6 +33,10 @@ switch($action)
     break;
 
   case 'new':
+    $data=$_POST['data'];
+    $data=json_encode($data);
+    file_put_contents('model/currPoll.json',$data);
+    echo 1;
   /*
     $file=fopen('model/currPoll.json','r');
     fwrite($file,'{}');
@@ -48,9 +52,11 @@ switch($action)
     {
       $data[$_POST['add']]+=1;
       $data["total"]+=1;
+      $data=json_encode($data);
+      file_put_contents('model/currPoll.json',$data);
+      //remind: chmod 777 currPoll.json
+      echo 1;
     }
-    $data=json_encode($data);
-    file_put_contents('model/currPoll.json',$data);
     break;
 }
 ?>

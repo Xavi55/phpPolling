@@ -25,7 +25,7 @@ function render(person)
       <div class="col-sm-4 col-md-4">
           <div class="thumbnail">
             <div id="${person}" class="caption">
-              <h3 class=center>${person}</h3>
+              <h3 class="center person">${person}</h3>
               <p class=center><a href="#/" class="btn btn-default" onclick=pick("${person}")>Vote</a></p>
             </div>
           </div>
@@ -58,10 +58,17 @@ function login()
 function submit()
 {
   let person=$(`.vote`).text();
-  $.post('../index.php',{action:"submit","add":person},data=>
+  if(person.length!=0)
   {
-    console.log(data);
-  })
+    $.post('../index.php',{action:"submit","add":person},data=>
+    {
+      console.log(data);
+    })
+  }
+  else
+  {
+    alert('No selection');
+  }
 }
 
 function newEntry()
@@ -78,22 +85,36 @@ function newEntry()
 
 function newPoll()
 {
-
   let entries = document.getElementsByClassName('add');
   if(entries.length!=0)
   {
     for(let i=0; i<entries.length;i++)
-  {
-    if(entries[i].value)
     {
-      render(entries[i].value);
+      if(entries[i].value)
+      {
+        render(entries[i].value);
+      }
     }
-  }
   $('.temp ').remove();
-
   //send new name to php
 
     //$('.btn-group button').addClass('admin');
   }
-  
+  candidates=document.getElementsByClassName('person');
+
+  let newPoll={'total':0};
+  for(let i=0; i<candidates.length;i++)
+  {
+    newPoll[candidates[i].innerHTML]=0;
+  }
+  $.post('../index.php',{action:"new","data":newPoll},data=>
+  {
+    if(data)
+      $('.btn-group .btn-default').addClass('admin');
+  });
+}
+
+function delPerson(person)
+{
+  console.log('remove');
 }
