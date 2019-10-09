@@ -1,7 +1,9 @@
 window.onload=()=>
 {
   loadPoll();
-  $('.btn-group button').removeClass('admin');
+
+  //testing
+  //$('.btn-group button').removeClass('admin');
 };
 
 function loadPoll()
@@ -19,12 +21,13 @@ function loadPoll()
   });
 }
 
-function render(person)
+render=(person)=>
 {
   $('#selection').append(`
-      <div class="col-sm-4 col-md-4">
+      <div class="col-sm-4 col-md-4" id="${person}">
           <div class="thumbnail">
-            <div id="${person}" class="caption">
+            <span class="close admin" onclick=delPerson("${person}")>×</span>
+            <div class="caption">
               <h3 class="center person">${person}</h3>
               <p class=center><a href="#/" class="btn btn-default" onclick=pick("${person}")>Vote</a></p>
             </div>
@@ -32,7 +35,7 @@ function render(person)
         </div>`);
 }
 
-function pick(person)
+pick=(person)=>
 {
   $('.caption a').removeClass('btn-primary');
   $('.caption h3').removeClass('vote');
@@ -42,20 +45,22 @@ function pick(person)
 
 }
 
-function login()
+login=()=>
 {
   let pass=$('#pass').val();
   $.post('../index.php',{action:"login","pass":pass},data=>
   {
     if(data)
     {
+      $('.close').removeClass('admin');
       $('.btn-group button').removeClass('admin');
+      $('#pass').val('');
       alert('save after editing.');
     }
   });
 }
 
-function submit()
+submit=()=>
 {
   let person=$(`.vote`).text();
   if(person.length!=0)
@@ -71,7 +76,7 @@ function submit()
   }
 }
 
-function newEntry()
+newEntry=()=>
 {
   $('#selection').append(`
       <div class="col-sm-4 col-md-4 temp">
@@ -83,7 +88,7 @@ function newEntry()
         </div>`);
 }
 
-function newPoll()
+newPoll=()=>
 {
   let entries = document.getElementsByClassName('add');
   if(entries.length!=0)
@@ -111,10 +116,12 @@ function newPoll()
   {
     if(data)
       $('.btn-group .btn-default').addClass('admin');
+      $('.close').addClass('admin');
   });
 }
 
-function delPerson(person)
+delPerson=(person)=>
 {
   console.log('remove');
+  $(`#${person}`).remove();
 }
