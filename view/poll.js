@@ -12,7 +12,7 @@ function loadPoll()
   {
     data=JSON.parse(data);
     $('#selection').html('');
-    for(let i in data)
+    for(let i in data['candidates'])
     {
       if(i==='total') continue;
       render(i);
@@ -67,13 +67,69 @@ submit=()=>
   {
     $.post('../index.php',{action:"submit","add":person},data=>
     {
-      console.log(data);
-    })
+      if(data.length!=0)
+      {
+        try 
+        {
+          makeChart(JSON.parse(data));
+        } 
+        catch(error) 
+        {
+          console.log('unable to render chart::',error);  
+        }
+      }
+    });
   }
   else
   {
     alert('No selection');
   }
+}
+
+makeChart=(poll)=>
+{
+  $('#result h4').text('Total Votes: '+poll['total']);
+  $('#result').removeClass('admin');
+  $('#selection').addClass('admin');
+  $('.btn-group').addClass('admin');
+
+  let x=$('#chart');
+  var myChart = new Chart(x, {
+    type: 'horizontalBar',
+    data: {
+        labels: Object.keys(poll['candidates']),
+        datasets: [{
+            label: '# of Votes',
+            data: Object.values(poll['candidates']),
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+          ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            xAxes:[{
+              ticks:{
+                beginAtZero:true
+              }
+            }]
+          }
+        }
+    });
 }
 
 newEntry=()=>
@@ -101,16 +157,17 @@ newPoll=()=>
       }
     }
   $('.temp ').remove();
-  //send new name to php
-
-    //$('.btn-group button').addClass('admin');
+  //add new candidates with the 'add' className
+  ///
+  //
+  //$('.btn-group button').addClass('admin');
   }
   candidates=document.getElementsByClassName('person');
 
-  let newPoll={'total':0};
+  let newPoll={'total':0,'candidates':{}};
   for(let i=0; i<candidates.length;i++)
   {
-    newPoll[candidates[i].innerHTML]=0;
+    newPoll['candidates'][candidates[i].innerHTML]=0;
   }
   $.post('../index.php',{action:"new","data":newPoll},data=>
   {

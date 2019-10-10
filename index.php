@@ -44,18 +44,16 @@ switch($action)
   */
     break;
 
-
-
   case 'submit':
     $data=json_decode(file_get_contents('model/currPoll.json'),true);
     if(isset($_POST['add']))
     {
-      $data[$_POST['add']]+=1;
+      $data['candidates'][$_POST['add']]+=1;
       $data["total"]+=1;
       $data=json_encode($data);
       file_put_contents('model/currPoll.json',$data);
       //remind: chmod 777 currPoll.json
-      echo 1;
+      echo $data;
     }
     break;
 }

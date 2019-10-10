@@ -32,6 +32,11 @@
     {
       color:red;
     }
+    #chart
+    {
+      width: 400px;
+      height: 400px;
+    }
   </style>
   </head>
   <body>
@@ -90,17 +95,24 @@
        
           -->
         </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default admin" onclick=newEntry()>+</button>
+            <button type="button" class="btn btn-default admin" onclick=newPoll()>Save</button>
+            <button type="button" class="btn btn-success" onclick=submit()>Submit</button>
+        </div>
+        <div id=result class=admin>
+          <canvas id=chart></canvas>
+          <h4 class=center>#</h4>
+        </div>
       </div>
-      <div class="btn-group">
-        <button type="button" class="btn btn-default admin" onclick=newEntry()>+</button>
-        <button type="button" class="btn btn-default admin" onclick=newPoll()>Save</button>
-        <button type="button" class="btn btn-success" onclick=submit()>Submit</button>
-      </div>
+      
 
   </body>
    <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  <script type='text/javascript' src='poll.js'></script>
+    <!-- charting via chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    <script type='text/javascript' src='poll.js'></script>
 <html>
