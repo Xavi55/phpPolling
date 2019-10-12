@@ -99,7 +99,7 @@ makeChart=(poll)=>
     data: {
         labels: Object.keys(poll['candidates']),
         datasets: [{
-            label: '# of Votes',
+            label: '',
             data: Object.values(poll['candidates']),
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
@@ -121,6 +121,13 @@ makeChart=(poll)=>
         }]
     },
     options: {
+        legend:{
+          display:false
+        },
+        title:{
+          text:'Best Person',
+          display:true
+        },
         scales: {
             xAxes:[{
               ticks:{
