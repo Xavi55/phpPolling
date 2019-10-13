@@ -11,13 +11,21 @@ function loadPoll()
   $.get('../index.php',{action:'load'},data=>
   {
     data=JSON.parse(data);
-    $('#selection').html('');
-    for(let i in data['candidates'])
-    {
-      if(i==='total') continue;
-      render(i);
-    }
 
+    if(data['voted']===1)
+    {
+      //user voted already
+      makeChart(data);
+    }
+    else
+    {
+      $('#selection').html('');
+      for(let i in data['candidates'])
+      {
+        if(i==='total') continue;
+        render(i);
+      }
+    }
   });
 }
 

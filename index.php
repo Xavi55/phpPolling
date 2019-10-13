@@ -8,6 +8,9 @@ if ($action == NULL)
         $action = 'home';
     }
 }
+session_start([
+  'cookie_lifetime' => 86400//limit voting once a day
+]);
 //$_SESSION["name"]="Kevin";
 //unset ($_SESSION["cart"]);//=array();
 
@@ -29,7 +32,13 @@ switch($action)
     break;
 
   case 'load':
-    echo json_encode(json_decode(file_get_contents('model/currPoll.json'),true));
+    //echo json_encode(
+      $data=json_decode(file_get_contents('model/currPoll.json'),true);
+      if(isset($_SESSION['voted']))
+      {
+        $data['voted']=1;
+      }
+      echo json_encode($data);
     break;
 
   case 'new':
@@ -48,6 +57,7 @@ switch($action)
     $data=json_decode(file_get_contents('model/currPoll.json'),true);
     if(isset($_POST['add']))
     {
+      $_SESSION['voted']=1;
       $data['candidates'][$_POST['add']]+=1;
       $data["total"]+=1;
       $data=json_encode($data);
